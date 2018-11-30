@@ -1,0 +1,83 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  background-color: #eee;
+  display: flex;
+  justify-content: center;
+}
+
+body {
+  font-family: "Helvetica Neue", sans-serif;
+  font-size: 1rem;
+}
+
+table {
+  border-spacing: 0;
+  border-collapse: separate;
+}
+table caption {
+  font-size: 0.9rem;
+  font-style: italic;
+  padding: 5px;
+}
+
+td, th {
+  border-bottom: darkred 1px solid;
+  padding: 10px;
+}
+
+th {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+@media screen and (min-width: 20em) {
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    caption-side: bottom;
+    empty-cells: hide;
+    font-feature-settings: "tnum";
+  }
+
+  .chart {
+    height: 100vh;
+    width: 70vw;
+  }
+
+  table.chart tbody tr {
+    display: grid;
+    grid-auto-columns: 1fr;
+    grid-template-rows: repeat(var(--y), 1fr);
+    grid-column-gap: 5px;
+    height: 60vh;
+    width: 40vw;
+    /* Generate background guides */
+    /* (sub-pixel rounding errors make this imperfect) */
+    --line-every: 50;
+    background-image: linear-gradient(to bottom, #ccc 1px, transparent 1px);
+    background-size: 100% calc((100% - 1.4rem) / var(--y) * var(--line-every));
+  }
+
+  .effectif td {
+    --start: calc(var(--y) + 1 - var(--value));
+    grid-row-start: var(--start);
+    grid-row-end: -2;
+    background-color: darkred;
+    border-radius: 5px 5px 0 0;
+  }
+
+  th {
+    display: none;
+  }
+
+  /*hide for now*/
+  table.chart tbody tr.ca {
+    display: none;
+  }
+}
+
+/*# sourceMappingURL=styles.css.map */
