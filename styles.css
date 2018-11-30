@@ -44,33 +44,53 @@ th {
   }
 
   .chart {
-    height: 100vh;
-    width: 70vw;
+    height: 60vh;
+    width: 40vw;
+    display: grid;
+    grid-template-areas: "content" "xAxis" "title";
   }
 
+  table.chart caption {
+    grid-area: title;
+  }
   table.chart tbody tr {
     display: grid;
     grid-auto-columns: 1fr;
     grid-template-rows: repeat(var(--y), 1fr);
     grid-column-gap: 5px;
-    height: 60vh;
-    width: 40vw;
     /* Generate background guides */
     /* (sub-pixel rounding errors make this imperfect) */
     --line-every: 50;
     background-image: linear-gradient(to bottom, #ccc 1px, transparent 1px);
     background-size: 100% calc((100% - 1.4rem) / var(--y) * var(--line-every));
   }
-
-  .effectif td {
+  table.chart thead {
+    grid-area: xAxis;
+  }
+  table.chart thead tr {
+    display: grid;
+  }
+  table.chart thead tr th {
+    display: flex;
+    grid-row: -2/span 1;
+    justify-content: center;
+    border-bottom: none;
+    padding: 5px;
+  }
+  table.chart .effectif td {
     --start: calc(var(--y) + 1 - var(--value));
     grid-row-start: var(--start);
     grid-row-end: -2;
     background-color: darkred;
     border-radius: 5px 5px 0 0;
+    text-align: center;
   }
-
-  th {
+  table.chart .effectif td span {
+    font-weight: bolder;
+    color: #eeeeee;
+    font-size: 0.9rem;
+  }
+  table.chart th.headername {
     display: none;
   }
 
