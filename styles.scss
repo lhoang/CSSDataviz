@@ -2,6 +2,10 @@
   box-sizing: border-box;
 }
 
+:root {
+  --zenika-red : rgb(178, 30, 62);
+}
+
 html, body {
   margin: 0;
   background-color: #eee;
@@ -27,7 +31,7 @@ table {
 }
 
 td, th {
-  border-bottom: darkred 1px solid;
+  border-bottom: var(--zenika-red) 1px solid;
   padding: 10px;
 }
 
@@ -38,6 +42,8 @@ th {
 
 
 @media screen and (min-width: 20em) {
+
+
   table {
     border-collapse: collapse;
     border-spacing: 0;
@@ -47,27 +53,13 @@ th {
   }
 
   .chart {
-    height: 60vh;
+    --height: 60vh;
+    height: var(--height);
     width: 40vw;
     display: grid;
     grid-template-areas: "content" "xAxis" "title";
+    position: relative;
   }
-
-
-  //table {
-  //  padding: calc(24em - 2rem) 0 1rem;
-  //}
-
-  //table::after {
-  //  --scale: calc(100% / var(--y));
-  //  //background-image: repeating-linear-gradient(
-  //  //                to bottom,
-  //  //                white,
-  //  //                white var(--scale),
-  //  //                rgba(0, 0, 0, .25) calc(var(--scale) + .25rem)
-  //
-  //  //);
-  //}
 
 
   table.chart {
@@ -75,17 +67,40 @@ th {
       grid-area: title;
     }
 
-    tbody tr {
+    th.headername {
+      display: none;
+    }
+
+    tbody tr.effectif {
+      grid-area: content;
       display: grid;
       grid-auto-columns: 1fr;
-      grid-template-rows: repeat(var(--y), 1fr);
+      grid-template-rows: repeat(var(--yEffectif), 1fr);
       grid-column-gap: 5px;
 
       /* Generate background guides */
       /* (sub-pixel rounding errors make this imperfect) */
       --line-every: 50;
       background-image: linear-gradient(to bottom, #ccc 1px, transparent 1px);
-      background-size: 100% calc((100% - 1.4rem) / var(--y) * var(--line-every));
+      background-size: 100% calc(100% / var(--yEffectif) * var(--line-every));
+
+      td {
+        --start: calc(var(--yEffectif) + 1 - var(--value));
+        grid-row-start: var(--start);
+        //grid-row-start: var(--value);
+        grid-row-end: -2;
+        background-color: var(--zenika-red);
+        border-radius: 5px 5px 0 0;
+        text-align: center;
+
+        span {
+          font-weight: bolder;
+          color: #eeeeee;
+          font-size: .9rem;
+        }
+      }
+
+
     }
 
     thead {
@@ -104,37 +119,81 @@ th {
       }
     }
 
-
-    .effectif td {
-      --start: calc(var(--y) + 1 - var(--value));
-      grid-row-start: var(--start);
-      //grid-row-start: var(--value);
-      grid-row-end: -2;
-      background-color: darkred;
-      border-radius: 5px 5px 0 0;
-      text-align: center;
-      span {
-        font-weight: bolder;
-        color: #eeeeee;
-        font-size: .9rem;
-      }
-    }
-
-    th.headername {
-      display: none;
-    }
   }
 
-  //th,
-  //td {
-  //  //border: 0;
-  //  padding: 10px;
-  //}
+  tr.ca {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    font-size: 0.9rem;
+    --offset-bottom: calc(3rem + 15px);
+    --bottom: calc(100% - var(--height) - var(--offset-bottom));
+    --ca-height: calc(var(--height) + var(--offset-bottom) );
 
-  /*hide for now*/
-  table.chart tbody tr.ca {
-    display: none;
+    &::before {
+      grid-area: content;
+      content: "";
+      // offset bottom : height tr = font-size + padding
+      --line-width: 4px;
+
+
+      --offset: calc((100% / var(--x)) / 2);
+      //background: linear-gradient(to top, blue, red 75%);
+      background-color: var(--color);
+      clip-path: polygon(
+        // go
+                      var(--offset) calc(100% - (var(--1) / var(--yCa) * 100%)),
+                      calc((100% / var(--x) * 1) + var(--offset)) calc(100% - (var(--2) / var(--yCa) * 100%)),
+                      calc((100% / var(--x) * 2) + var(--offset)) calc(100% - (var(--3) / var(--yCa) * 100%)),
+                      calc((100% / var(--x) * 3) + var(--offset)) calc(100% - (var(--4) / var(--yCa) * 100%)),
+                      calc((100% / var(--x) * 4) + var(--offset)) calc(100% - (var(--5) / var(--yCa) * 100%)),
+                      calc((100% / var(--x) * 5) + var(--offset)) calc(100% - (var(--6) / var(--yCa) * 100%)),
+                      calc((100% / var(--x) * 6) + var(--offset)) calc(100% - (var(--7) / var(--yCa) * 100%)),
+                // and back
+                      calc((100% / var(--x) * 6) + var(--offset)) calc(100% - (var(--7) / var(--yCa) * 100%) + var(--line-width)),
+                      calc((100% / var(--x) * 5) + var(--offset)) calc(100% - (var(--6) / var(--yCa) * 100%) + var(--line-width)),
+                      calc((100% / var(--x) * 4) + var(--offset)) calc(100% - (var(--5) / var(--yCa) * 100%) + var(--line-width)),
+                      calc((100% / var(--x) * 3) + var(--offset)) calc(100% - (var(--4) / var(--yCa) * 100%) + var(--line-width)),
+                      calc((100% / var(--x) * 2) + var(--offset)) calc(100% - (var(--3) / var(--yCa) * 100%) + var(--line-width)),
+                      calc((100% / var(--x) * 1) + var(--offset)) calc(100% - (var(--2) / var(--yCa) * 100%) + var(--line-width)),
+                      var(--offset) calc(100% - (var(--1) / var(--yCa) * 100%) + var(--line-width)) //calc((100% / var(--x) * 7) + var(--offset)) 100% calc(100% - (var(--7) / var(--yCa) * 100%)),
+        //calc((100% / var(--x) * 6) + var(--offset)) 100%,
+        // var(--offset) 100%
+      );
+      position: absolute;
+      top: 0;
+      bottom: var(--bottom);
+      width: 100%;
+    }
+
+    td {
+      display: flex;
+      grid-row: -2 / span 1;
+      justify-content: center;
+      border-bottom: none;
+      padding: 5px;
+
+        &::before {
+          --top:  calc(var(--ca-height) - (var(--value) / var(--yCa) * var(--ca-height)));
+          --size: 0.6rem;
+          background-color: #cccccc;
+          border: 2px solid var(--color);
+          border-radius: 50%;
+          box-shadow: 0 0 0 rgba(0, 0, 0, .5);
+          content: "";
+          height: var(--size);
+          position: absolute;
+          top: var(--top);
+          transform: translate3d(0, calc(var(--size) / -2), 0);
+          width: var(--size);
+          z-index: 4;
+        }
+    }
+
   }
 
 }
+
+
+
+
 

@@ -2,6 +2,10 @@
   box-sizing: border-box;
 }
 
+:root {
+  --zenika-red: rgb(178, 30, 62);
+}
+
 html, body {
   margin: 0;
   background-color: #eee;
@@ -25,7 +29,7 @@ table caption {
 }
 
 td, th {
-  border-bottom: darkred 1px solid;
+  border-bottom: var(--zenika-red) 1px solid;
   padding: 10px;
 }
 
@@ -44,25 +48,44 @@ th {
   }
 
   .chart {
-    height: 60vh;
+    --height: 60vh;
+    height: var(--height);
     width: 40vw;
     display: grid;
     grid-template-areas: "content" "xAxis" "title";
+    position: relative;
   }
 
   table.chart caption {
     grid-area: title;
   }
-  table.chart tbody tr {
+  table.chart th.headername {
+    display: none;
+  }
+  table.chart tbody tr.effectif {
+    grid-area: content;
     display: grid;
     grid-auto-columns: 1fr;
-    grid-template-rows: repeat(var(--y), 1fr);
+    grid-template-rows: repeat(var(--yEffectif), 1fr);
     grid-column-gap: 5px;
     /* Generate background guides */
     /* (sub-pixel rounding errors make this imperfect) */
     --line-every: 50;
     background-image: linear-gradient(to bottom, #ccc 1px, transparent 1px);
-    background-size: 100% calc((100% - 1.4rem) / var(--y) * var(--line-every));
+    background-size: 100% calc(100% / var(--yEffectif) * var(--line-every));
+  }
+  table.chart tbody tr.effectif td {
+    --start: calc(var(--yEffectif) + 1 - var(--value));
+    grid-row-start: var(--start);
+    grid-row-end: -2;
+    background-color: var(--zenika-red);
+    border-radius: 5px 5px 0 0;
+    text-align: center;
+  }
+  table.chart tbody tr.effectif td span {
+    font-weight: bolder;
+    color: #eeeeee;
+    font-size: 0.9rem;
   }
   table.chart thead {
     grid-area: xAxis;
@@ -77,26 +100,48 @@ th {
     border-bottom: none;
     padding: 5px;
   }
-  table.chart .effectif td {
-    --start: calc(var(--y) + 1 - var(--value));
-    grid-row-start: var(--start);
-    grid-row-end: -2;
-    background-color: darkred;
-    border-radius: 5px 5px 0 0;
-    text-align: center;
-  }
-  table.chart .effectif td span {
-    font-weight: bolder;
-    color: #eeeeee;
-    font-size: 0.9rem;
-  }
-  table.chart th.headername {
-    display: none;
-  }
 
-  /*hide for now*/
-  table.chart tbody tr.ca {
-    display: none;
+  tr.ca {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    font-size: 0.9rem;
+    --offset-bottom: calc(3rem + 15px);
+    --bottom: calc(100% - var(--height) - var(--offset-bottom));
+    --ca-height: calc(var(--height) + var(--offset-bottom) );
+  }
+  tr.ca::before {
+    grid-area: content;
+    content: "";
+    --line-width: 4px;
+    --offset: calc((100% / var(--x)) / 2);
+    background-color: var(--color);
+    clip-path: polygon(var(--offset) calc(100% - (var(--1) / var(--yCa) * 100%)), calc((100% / var(--x) * 1) + var(--offset)) calc(100% - (var(--2) / var(--yCa) * 100%)), calc((100% / var(--x) * 2) + var(--offset)) calc(100% - (var(--3) / var(--yCa) * 100%)), calc((100% / var(--x) * 3) + var(--offset)) calc(100% - (var(--4) / var(--yCa) * 100%)), calc((100% / var(--x) * 4) + var(--offset)) calc(100% - (var(--5) / var(--yCa) * 100%)), calc((100% / var(--x) * 5) + var(--offset)) calc(100% - (var(--6) / var(--yCa) * 100%)), calc((100% / var(--x) * 6) + var(--offset)) calc(100% - (var(--7) / var(--yCa) * 100%)), calc((100% / var(--x) * 6) + var(--offset)) calc(100% - (var(--7) / var(--yCa) * 100%) + var(--line-width)), calc((100% / var(--x) * 5) + var(--offset)) calc(100% - (var(--6) / var(--yCa) * 100%) + var(--line-width)), calc((100% / var(--x) * 4) + var(--offset)) calc(100% - (var(--5) / var(--yCa) * 100%) + var(--line-width)), calc((100% / var(--x) * 3) + var(--offset)) calc(100% - (var(--4) / var(--yCa) * 100%) + var(--line-width)), calc((100% / var(--x) * 2) + var(--offset)) calc(100% - (var(--3) / var(--yCa) * 100%) + var(--line-width)), calc((100% / var(--x) * 1) + var(--offset)) calc(100% - (var(--2) / var(--yCa) * 100%) + var(--line-width)), var(--offset) calc(100% - (var(--1) / var(--yCa) * 100%) + var(--line-width)));
+    position: absolute;
+    top: 0;
+    bottom: var(--bottom);
+    width: 100%;
+  }
+  tr.ca td {
+    display: flex;
+    grid-row: -2/span 1;
+    justify-content: center;
+    border-bottom: none;
+    padding: 5px;
+  }
+  tr.ca td::before {
+    --top: calc(var(--ca-height) - (var(--value) / var(--yCa) * var(--ca-height)));
+    --size: 0.6rem;
+    background-color: #cccccc;
+    border: 2px solid var(--color);
+    border-radius: 50%;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0.5);
+    content: "";
+    height: var(--size);
+    position: absolute;
+    top: var(--top);
+    transform: translate3d(0, calc(var(--size) / -2), 0);
+    width: var(--size);
+    z-index: 4;
   }
 }
 
