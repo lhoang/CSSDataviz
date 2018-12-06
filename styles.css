@@ -87,6 +87,7 @@ th {
     background-color: var(--zenika-red);
     border-radius: 5px 5px 0 0;
     text-align: center;
+    padding-top: 0.5rem;
   }
   table.chart tbody tr.effectif td span {
     font-weight: bolder;
@@ -133,9 +134,9 @@ th {
     justify-content: center;
     border-bottom: none;
     padding: 5px;
+    --top: calc(var(--ca-height) - (var(--value) / var(--yCa) * var(--ca-height)));
   }
   tr.ca td::before {
-    --top: calc(var(--ca-height) - (var(--value) / var(--yCa) * var(--ca-height)));
     --size: 0.6rem;
     background-color: #cccccc;
     border: 2px solid var(--color);
@@ -148,6 +149,11 @@ th {
     transform: translate3d(0, calc(var(--size) / -2), 0);
     width: var(--size);
     z-index: 4;
+  }
+  tr.ca td span {
+    position: absolute;
+    top: calc(var(--top) - 2rem);
+    z-index: 5;
   }
 }
 

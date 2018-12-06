@@ -103,11 +103,13 @@ th {
         background-color: var(--zenika-red);
         border-radius: 5px 5px 0 0;
         text-align: center;
+        padding-top: .5rem;
 
         span {
           font-weight: bolder;
           color: #eeeeee;
           font-size: .9rem;
+
         }
       }
 
@@ -196,9 +198,9 @@ th {
       //grid-row-end: -1;
       //background-color: green;
       //text-align: center;
-
+      --top:  calc(var(--ca-height) - (var(--value) / var(--yCa) * var(--ca-height)));
         &::before {
-          --top:  calc(var(--ca-height) - (var(--value) / var(--yCa) * var(--ca-height)));
+
           --size: 0.6rem;
           background-color: #cccccc;
           border: 2px solid var(--color);
@@ -212,6 +214,12 @@ th {
           width: var(--size);
           z-index: 4;
         }
+
+      & span {
+        position: absolute;
+        top: calc(var(--top) - 2rem);
+        z-index: 5;
+      }
     }
 
   }
