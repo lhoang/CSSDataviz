@@ -3,7 +3,7 @@
 }
 
 :root {
-  --zenika-red : rgb(178, 30, 62);
+  --zenika-red: rgb(178, 30, 62);
 }
 
 html, body {
@@ -32,7 +32,6 @@ table {
 
 td, th {
   border-bottom: var(--zenika-red) 1px solid;
-  //padding: 10px;
 }
 
 th {
@@ -40,8 +39,21 @@ th {
   font-weight: bold;
 }
 
+/// Mixin to prefix a property
+/// @author Hugo Giraudel
+/// @param {String} $property - Property name
+/// @param {*} $value - Property value
+/// @param {List} $prefixes (()) - List of prefixes to print
+@mixin prefix($property, $value, $prefixes: ()) {
+  @each $prefix in $prefixes {
+    #{'-' + $prefix + '-' + $property}: $value;
+  }
+  // Output standard non-prefixed declaration
+  #{$property}: $value;
+}
 
-@media screen and (min-width: 20em) {
+
+@media screen and (min-width: 50em) {
 
 
   table {
@@ -55,7 +67,7 @@ th {
   .chart {
     //--height: 280px;
     // TODO : responsive
-      --height: 60vh;
+    --height: 60vh;
     height: var(--height);
     width: 40vw;
     display: grid;
@@ -89,8 +101,6 @@ th {
       height: 100%;
       z-index: 2;
 
-      /* Generate background guides */
-      /* (sub-pixel rounding errors make this imperfect) */
       --line-every: 50;
       background-image: linear-gradient(to bottom, #ccc 1px, transparent 1px);
       background-size: 100% calc(100% / var(--yEffectif) * var(--line-every));
@@ -98,7 +108,6 @@ th {
       td {
         --start: calc(var(--yEffectif) + 1 - var(--value));
         grid-row-start: var(--start);
-        //grid-row-start: var(--value);
         grid-row-end: -1;
         background-color: var(--zenika-red);
         border-radius: 5px 5px 0 0;
@@ -109,7 +118,6 @@ th {
           font-weight: bolder;
           color: #eeeeee;
           font-size: .9rem;
-
         }
       }
 
@@ -138,47 +146,37 @@ th {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     font-size: 0.9rem;
-    //--offset-bottom: calc(3rem + 15px);
     --offset-bottom: 0px;
-    --bottom: calc(100% - var(--height) - var(--offset-bottom));
-    --ca-height: calc(var(--height) + var(--offset-bottom) );
+    --bottom: calc(100% - var(--height));
+    --ca-height: var(--height);
 
-    //grid-auto-columns: 1fr;
-    //grid-template-rows: repeat(var(--yCa), 1fr);
-    //position: absolute;
-    //width: 100%;
-    //height: 100%;
 
     &::before {
       grid-area: content;
       content: "";
-      // offset bottom : height tr = font-size + padding
       --line-width: 4px;
 
-
       --offset: calc((100% / var(--x)) / 2);
-      //background: linear-gradient(to top, blue, red 75%);
       background-color: var(--color);
-      clip-path: polygon(
-        // go
-                      var(--offset) calc(100% - (var(--1) / var(--yCa) * 100%)),
-                      calc((100% / var(--x) * 1) + var(--offset)) calc(100% - (var(--2) / var(--yCa) * 100%)),
-                      calc((100% / var(--x) * 2) + var(--offset)) calc(100% - (var(--3) / var(--yCa) * 100%)),
-                      calc((100% / var(--x) * 3) + var(--offset)) calc(100% - (var(--4) / var(--yCa) * 100%)),
-                      calc((100% / var(--x) * 4) + var(--offset)) calc(100% - (var(--5) / var(--yCa) * 100%)),
-                      calc((100% / var(--x) * 5) + var(--offset)) calc(100% - (var(--6) / var(--yCa) * 100%)),
-                      calc((100% / var(--x) * 6) + var(--offset)) calc(100% - (var(--7) / var(--yCa) * 100%)),
-                // and back
-                      calc((100% / var(--x) * 6) + var(--offset)) calc(100% - (var(--7) / var(--yCa) * 100%) + var(--line-width)),
-                      calc((100% / var(--x) * 5) + var(--offset)) calc(100% - (var(--6) / var(--yCa) * 100%) + var(--line-width)),
-                      calc((100% / var(--x) * 4) + var(--offset)) calc(100% - (var(--5) / var(--yCa) * 100%) + var(--line-width)),
-                      calc((100% / var(--x) * 3) + var(--offset)) calc(100% - (var(--4) / var(--yCa) * 100%) + var(--line-width)),
-                      calc((100% / var(--x) * 2) + var(--offset)) calc(100% - (var(--3) / var(--yCa) * 100%) + var(--line-width)),
-                      calc((100% / var(--x) * 1) + var(--offset)) calc(100% - (var(--2) / var(--yCa) * 100%) + var(--line-width)),
-                      var(--offset) calc(100% - (var(--1) / var(--yCa) * 100%) + var(--line-width)) //calc((100% / var(--x) * 7) + var(--offset)) 100% calc(100% - (var(--7) / var(--yCa) * 100%)),
-        //calc((100% / var(--x) * 6) + var(--offset)) 100%,
-        // var(--offset) 100%
-      );
+      @include prefix(clip-path,
+              polygon(
+                // go
+                              var(--offset) calc(100% - (var(--1) / var(--yCa) * 100%)),
+                              calc((100% / var(--x) * 1) + var(--offset)) calc(100% - (var(--2) / var(--yCa) * 100%)),
+                              calc((100% / var(--x) * 2) + var(--offset)) calc(100% - (var(--3) / var(--yCa) * 100%)),
+                              calc((100% / var(--x) * 3) + var(--offset)) calc(100% - (var(--4) / var(--yCa) * 100%)),
+                              calc((100% / var(--x) * 4) + var(--offset)) calc(100% - (var(--5) / var(--yCa) * 100%)),
+                              calc((100% / var(--x) * 5) + var(--offset)) calc(100% - (var(--6) / var(--yCa) * 100%)),
+                              calc((100% / var(--x) * 6) + var(--offset)) calc(100% - (var(--7) / var(--yCa) * 100%)),
+                        // and back
+                              calc((100% / var(--x) * 6) + var(--offset)) calc(100% - (var(--7) / var(--yCa) * 100%) + var(--line-width)),
+                              calc((100% / var(--x) * 5) + var(--offset)) calc(100% - (var(--6) / var(--yCa) * 100%) + var(--line-width)),
+                              calc((100% / var(--x) * 4) + var(--offset)) calc(100% - (var(--5) / var(--yCa) * 100%) + var(--line-width)),
+                              calc((100% / var(--x) * 3) + var(--offset)) calc(100% - (var(--4) / var(--yCa) * 100%) + var(--line-width)),
+                              calc((100% / var(--x) * 2) + var(--offset)) calc(100% - (var(--3) / var(--yCa) * 100%) + var(--line-width)),
+                              calc((100% / var(--x) * 1) + var(--offset)) calc(100% - (var(--2) / var(--yCa) * 100%) + var(--line-width)),
+                              var(--offset) calc(100% - (var(--1) / var(--yCa) * 100%) + var(--line-width))
+              ), webkit);
       position: absolute;
       top: 0;
       bottom: var(--bottom);
@@ -191,29 +189,24 @@ th {
       justify-content: center;
       border-bottom: none;
       padding: 5px;
+      position: relative;
+      --top: calc(var(--ca-height) - (var(--value) / var(--yCa) * var(--ca-height)));
 
-      //--start: calc(var(--yCa) + 1 - var(--value));
-      //grid-row-start: var(--start);
-      ////grid-row-start: var(--value);
-      //grid-row-end: -1;
-      //background-color: green;
-      //text-align: center;
-      --top:  calc(var(--ca-height) - (var(--value) / var(--yCa) * var(--ca-height)));
-        &::before {
+      &::before {
 
-          --size: 0.6rem;
-          background-color: #cccccc;
-          border: 2px solid var(--color);
-          border-radius: 50%;
-          box-shadow: 0 0 0 rgba(0, 0, 0, .5);
-          content: "";
-          height: var(--size);
-          position: absolute;
-          top: var(--top);
-          transform: translate3d(0, calc(var(--size) / -2), 0);
-          width: var(--size);
-          z-index: 4;
-        }
+        --size: 0.6rem;
+        background-color: #cccccc;
+        border: 2px solid var(--color);
+        border-radius: 50%;
+        box-shadow: 0 0 0 rgba(0, 0, 0, .5);
+        content: "";
+        height: var(--size);
+        position: absolute;
+        top: var(--top);
+        transform: translate3d(0, calc(var(--size) / -2), 0);
+        width: var(--size);
+        z-index: 4;
+      }
 
       & span {
         position: absolute;
@@ -223,6 +216,7 @@ th {
     }
 
   }
+
 
 }
 
