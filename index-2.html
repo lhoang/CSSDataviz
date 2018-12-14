@@ -3,19 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>CSS Dataviz</title>
-    <link href="styles.css" rel="stylesheet">
+    <link href="styles2.css" rel="stylesheet">
 </head>
 <body>
-<div class="container switch">
-    <span id="label-switch">CSS Switch</span>
-    <span id="desc-switch">Désactivation des styles</span>
-    <button type="button" class="disable-css" role="switch" aria-checked="true" aria-labelledby="label-switch" aria-describedby="desc-switch">
-        <span>Stylé</span>
-        <span>Sobre</span>
-    </button>
-</div>
-<div class="container">
-
 
 <table class="chart" style="--yEffectif: 450; --yCa: 35; --x:7">
     <caption>Chiffre d'affaire et effectif de Zenika</caption>
@@ -55,21 +45,5 @@
     </tbody>
 
 </table>
-</div>
-<script>
-    document.addEventListener( "DOMContentLoaded", function () {
-        var switches = document.querySelectorAll( '[role="switch"]' );
-
-        Array.prototype.forEach.call( switches, function( el, i ) {
-            el.addEventListener( 'click', function() {
-                var checked = this.getAttribute( 'aria-checked' ) == 'true' || false;
-                this.setAttribute( 'aria-checked', !checked );
-
-                var chart = this.parentNode.nextElementSibling.children[0];
-                chart.classList.toggle( 'chart' );
-            });
-        });
-    });
-</script>
 </body>
 </html>
