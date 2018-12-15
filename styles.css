@@ -18,7 +18,7 @@ body {
 
 .container {
   margin: 1rem auto;
-  width: 100%;
+  width: 50vw;
 }
 
 .switch {
@@ -138,11 +138,11 @@ th {
     text-align: center;
     padding-top: 0.5rem;
     transition: all 0.2s ease-in-out;
-    opacity: 1;
   }
   table.chart tbody tr.effectif td:hover {
     transform: scale(1.05);
-    opacity: 0.8;
+    filter: invert(100%);
+    cursor: pointer;
   }
   table.chart tbody tr.effectif td span {
     font-weight: bolder;

@@ -164,11 +164,11 @@ th {
         text-align: center;
         padding-top: .5rem;
         transition: all .2s ease-in-out;
-        opacity: 1;
 
         &:hover {
           transform: scale(1.05);
-          opacity: 0.8;
+          filter: invert(100%);
+          cursor: pointer;
         }
 
         span {
