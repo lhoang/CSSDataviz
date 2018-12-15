@@ -109,7 +109,7 @@ th {
   table.chart caption {
     grid-area: title;
   }
-  table.chart th.headername {
+  table.chart th[scope=row] {
     display: none;
   }
   table.chart tbody {

@@ -19,7 +19,7 @@ body {
 
 .container {
   margin: 1rem auto;
-  width:100%;
+  width: 50vw;
 }
 
 .switch {
@@ -131,7 +131,7 @@ th {
       grid-area: title;
     }
 
-    th.headername {
+    th[scope=row] {
       display: none;
     }
 
